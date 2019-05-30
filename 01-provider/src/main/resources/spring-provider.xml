@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <!--指定当前工程在管控平台的名称-->
+    <dubbo:application name="01-provider"/>
+
+    <!--指定注册中心：暂不使用-->
+    <dubbo:registry address="N/A"/>
+
+    <!--注册业务接口实现类，它是真正的服务提供者-->
+    <bean id="someService" class="com.dubbo.provider.SomeServiceImpl"/>
+
+    <!--对外暴露的服务接口-->
+    <dubbo:service interface="com.dubbo.service.SomeService" ref="someService"/>
+</beans>

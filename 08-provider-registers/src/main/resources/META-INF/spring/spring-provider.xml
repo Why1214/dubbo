@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <!--指定当前工程在管控平台的名称-->
+    <dubbo:application name="08-provider-register"/>
+
+    <!--声明注册中心-->
+    <dubbo:registry id="bjCenter" address="zookeeper://bjZK:2181"/> <!--北京注册中心-->
+    <dubbo:registry id="shCenter" address="zookeeper://shZK:2181"/> <!--上海注册中心-->
+    <dubbo:registry id="gzCenter" address="zookeeper://gzZK:2181"/> <!--广州注册中心-->
+    <dubbo:registry id="cqCenter" address="zookeeper://cqZK:2181"/> <!--重庆注册中心-->
+
+
+    <!--注册业务接口实现类，它是真正的服务提供者-->
+    <bean id="aiPayService" class="com.dubbo.provider.AiPaySomeServiceImpl"/>
+    <bean id="weChatService" class="com.dubbo.provider.WeChatSomeServiceImpl"/>
+
+    <!--对外暴露的服务接口-->
+    <dubbo:service interface="com.dubbo.service.SomeService"
+                   ref="aiPayService"
+                   version="0.0.1"
+                   group="pay.aipay"
+                   register="bjCenter,shCenter"/>
+
+    <dubbo:service interface="com.dubbo.service.SomeService"
+                   ref="weChatService"
+                   version="0.0.1"
+                   group="pay.wechat"
+                   protocol="rmi"
+                   register="gzCenter,cqCenter"/>
+</beans>
